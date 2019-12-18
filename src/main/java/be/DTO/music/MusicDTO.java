@@ -1,5 +1,7 @@
 package be.DTO.music;
 
+import be.entities.Music;
+
 public class MusicDTO {
 	private String title;
 	private Integer duration;
@@ -7,6 +9,11 @@ public class MusicDTO {
 	private Long nbFans;
 	
 	public MusicDTO() {}
+	public MusicDTO(Music m) {
+		this.title = m.getTitle();
+		this.duration = m.getDuration();
+		this.autorName = m.getAutor().getPseudo();
+	}
 	public MusicDTO(String title, Integer duration, String autorName, Long nbFans) {
 		this.title = title;
 		this.duration = duration;

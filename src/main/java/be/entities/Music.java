@@ -1,15 +1,15 @@
 package be.entities;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+
+import be.DTO.music.MusicPostDTO;
 
 @Entity
 public class Music {
@@ -24,8 +24,16 @@ public class Music {
 	
 	@ManyToOne
 	@JoinColumn(name = "autor_id")
+	@NotNull
 	private Autor autor;
 	private Integer duration;
+	
+	public Music() {}
+	
+	public Music(MusicPostDTO m) {
+		this.duration = m.getDuration();
+		this.title = m.getTitle();
+	}
 	
 	
 	public Integer getId() {
