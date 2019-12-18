@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import be.DTO.music.MusicDTO;
-import be.DTO.music.MusicPostDTO;
+import be.DTO.music.MusicFilterDTO;
 import be.entities.Music;
 
 public interface MusicDAO extends JpaRepository<Music, Integer>{
@@ -18,5 +18,10 @@ public interface MusicDAO extends JpaRepository<Music, Integer>{
 			+ " GROUP BY m.title, m.duration, m.autor.pseudo")
 	Optional<MusicDTO> getMusicDTO(@Param("id") Integer id);
 	
-	
+	@Query("SELECT m FROM Music m"
+			+ " WHERE m.duration = :#{#filters.duration}"
+			+ " AND m.title LIKE CONCAT('%', CONCAT(:#{#filters.title}, '%'))"
+			+ " AND m.autor.pseudo = :#{#filters.autorName}"
+			)
+	List<Music> getFiltered(@Param("filters") MusicFilterDTO filters);
 }

@@ -22,6 +22,7 @@ public class MusicDTO {
 	}
 	
 	public String getTitle() {
+		System.out.println("ICI GET TITLE");
 		return title;
 	}
 	public void setTitle(String title) {
