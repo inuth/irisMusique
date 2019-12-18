@@ -3,8 +3,8 @@ package be.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,9 +36,14 @@ public class MusicController {
 	}
 	
 	@PostMapping("")
-	public ResponseEntity<MusicDTO> post(@Valid @RequestBody MusicPostDTO music){
+	public ResponseEntity<MusicDTO> post(@Valid @RequestBody MusicPostDTO music) throws Exception{
 		System.out.println("coucou");
-		Autor autor = autorDAO.findById(music.getAutorId()).orElse(null);
+		Autor autor = autorDAO
+				.findById(music.getAutorId())
+				.orElseThrow(() -> new ResourceNotFoundException("no autor with id : " + music.getAutorId()));
+//		Autor autor = autorDAO
+//				.findById(music.getAutorId())
+//				.orElseThrow(ResourceNotFoundException::new);
 		Music newMusic = new Music(music);
 		newMusic.setAutor(autor);
 		return ResponseEntity.ok(new MusicDTO(musicDAO.save(newMusic)));
