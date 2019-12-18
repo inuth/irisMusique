@@ -1,0 +1,16 @@
+1) Créez la méthode permettant à une personne de choisir sa musique favorite (aucun système de connexion n'est requis)
+
+2) Permettre la modification du pseudo d'un auteur
+
+3) Permettre la suppression d'une musique
+
+4) Permettre la recherche d'auteur par pseudo
+
+5) Permettre de récupérer le top X des auteurs (X étant un nombre entier >= 1). Le meilleur des auteurs est celui qui a le plus de fans. Ne pas gérer les égalités.
+
+6.a) Permettre la recherche de musique par "bout de titre"
+6.b) Permettre d'autres filtres comme la durée minimale, la durée maximale ainsi que le nom de l'auteur
+	(/!\ tous les filtres sont optionnels)
+
+
+

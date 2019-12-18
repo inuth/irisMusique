@@ -1,5 +1,6 @@
 package be.DAO;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import be.DTO.music.MusicDTO;
+import be.DTO.music.MusicPostDTO;
 import be.entities.Music;
 
 public interface MusicDAO extends JpaRepository<Music, Integer>{
@@ -15,4 +17,6 @@ public interface MusicDAO extends JpaRepository<Music, Integer>{
 			+ " WHERE m.id = :id"
 			+ " GROUP BY m.title, m.duration, m.autor.pseudo")
 	Optional<MusicDTO> getMusicDTO(@Param("id") Integer id);
+	
+	
 }
