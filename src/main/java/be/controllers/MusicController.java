@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +21,7 @@ import be.DAO.AutorDAO;
 import be.DAO.MusicDAO;
 import be.DTO.music.MusicDTO;
 import be.DTO.music.MusicFilterDTO;
+import be.DTO.music.MusicFilterV2DTO;
 import be.DTO.music.MusicPostDTO;
 import be.entities.Autor;
 import be.entities.Music;
@@ -53,6 +53,16 @@ public class MusicController {
 		System.out.println("AVANT LE RETURN");
 		return ResponseEntity.ok(musics.collect(Collectors.toList()));
 	}
+	
+	@GetMapping("/v2")
+	public ResponseEntity<List<MusicDTO>> get(MusicFilterV2DTO filters){	
+		Stream<MusicDTO> musics = musicDAO
+				.getFilteredV2(filters)
+				.stream()
+				.map(m -> new MusicDTO(m));
+		return ResponseEntity.ok(musics.collect(Collectors.toList()));	
+	}
+	
 //	@PutMapping
 //	@DeleteMapping
 	@PostMapping("")
@@ -67,5 +77,14 @@ public class MusicController {
 		Music newMusic = new Music(music);
 		newMusic.setAutor(autor);
 		return ResponseEntity.ok(new MusicDTO(musicDAO.save(newMusic)));
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Boolean> delete(@PathVariable Integer id) {
+		Music music = musicDAO.findById(id).orElseThrow(() -> new ResourceNotFoundException("You tried to delete a music not found."));
+		
+		// si lié, on supprime pas
+		musicDAO.delete(music);
+		return ResponseEntity.ok(true);
 	}
 }

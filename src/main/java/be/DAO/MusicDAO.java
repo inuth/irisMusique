@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import be.DTO.music.MusicDTO;
 import be.DTO.music.MusicFilterDTO;
+import be.DTO.music.MusicFilterV2DTO;
 import be.entities.Music;
 
 public interface MusicDAO extends JpaRepository<Music, Integer>{
@@ -24,4 +25,13 @@ public interface MusicDAO extends JpaRepository<Music, Integer>{
 			+ " AND m.autor.pseudo = :#{#filters.autorName}"
 			)
 	List<Music> getFiltered(@Param("filters") MusicFilterDTO filters);
+	
+	@Query("SELECT m"
+			+ " FROM Music m"
+			+ " WHERE"
+				+ " (:#{#filters.title} is null OR m.title LIKE CONCAT('%', CONCAT(:#{#filters.title}, '%')) )"
+				+ " AND (:#{#filters.minDuration} is null OR :#{#filters.minDuration} <= m.duration)"
+				+ " AND (:#{#filters.maxDuration} is null OR :#{#filters.maxDuration} >= m.duration)"
+				+ " AND (:#{#filters.autorName} is null OR :#{#filters.autorName} = m.autor.pseudo)")
+	List<Music> getFilteredV2(@Param("filters") MusicFilterV2DTO filters);
 }
