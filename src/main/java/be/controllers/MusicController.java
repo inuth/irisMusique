@@ -25,9 +25,17 @@ import be.DTO.music.MusicFilterV2DTO;
 import be.DTO.music.MusicPostDTO;
 import be.entities.Autor;
 import be.entities.Music;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("music")
+@Tag(name = "music", description = "the music api")
 public class MusicController {
 	
 	@Autowired
@@ -65,8 +73,22 @@ public class MusicController {
 	
 //	@PutMapping
 //	@DeleteMapping
-	@PostMapping("")
-	public ResponseEntity<MusicDTO> post(@Valid @RequestBody MusicPostDTO music) throws Exception{
+    @Operation(summary = "Add a new music", description = "description to add a new music", tags = { "music" })
+    //@io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(encoding = @Encoding(contentType = "application/json")))
+    
+    @ApiResponses(value = { 
+
+        @ApiResponse(responseCode = "201", description = "Music created",
+
+                content = @Content(schema = @Schema(implementation = MusicDTO.class))), 
+
+        @ApiResponse(responseCode = "400", description = "Invalid input"), 
+
+        @ApiResponse(responseCode = "409", description = "music already exists") })	
+	@PostMapping(value="", consumes = {"application/json"})
+	public ResponseEntity<MusicDTO> post(@Parameter(description="music to add. Cannot null or empty.", 
+
+            required=true) @Valid @RequestBody MusicPostDTO music) throws Exception{
 		System.out.println("coucou");
 		Autor autor = autorDAO
 				.findById(music.getAutorId())
