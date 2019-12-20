@@ -41,7 +41,7 @@ public class RestTest {
 		.statusCode(200)
 		.contentType(ContentType.JSON)
 		//.log()
-		.body("[0].duration", equalTo(204));
+		.body("[0].title", equalTo("Nothing else matters"));
 	}
 	
 	@Test
